@@ -3,6 +3,14 @@ library(bit64)
 
 readBinary<-function(filename, objectVector, sizeVector, nameVector)
 {
+  if(length(objectVector) != length(sizeVector)){
+    return(NULL)
+  }
+
+  if(length(nameVector) != length(sizeVector)){
+    return(NULL)
+  }
+
   fileCon=file(filename,"rb")
   fileSize<-file.info(filename)$size
   raw<-readBin(fileCon,"raw",n=fileSize,endian="little")
@@ -22,4 +30,10 @@ readBinary<-function(filename, objectVector, sizeVector, nameVector)
   }
   return(dt)
 }
+
+dt=readBinary(brag_detfiles[1],
+           c(rep("integer", 5), rep("numeric", 7)),
+           c(rep(4,12)),
+           c("year", "histkey", "month", "day", "doy", "pre",
+              "etc0", "tmax", "tmin", "rs", "rh", "u2"))
 
